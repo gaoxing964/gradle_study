@@ -1,0 +1,5 @@
+rootProject.name = 'multipleProjects'
+include 'app2'
+include 'app3'
+include 'app4'
+

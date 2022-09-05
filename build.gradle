@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example.multipleprojects'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task "taskTutorial" {
+
+    println("这是最简单的task")
+
+    doFirst {
+        println("taskTutorial doFirst")
+    }
+
+    doLast {
+        println("taskTutorial doLast")
+    }
+}
