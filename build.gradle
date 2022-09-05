@@ -43,3 +43,22 @@ taskTutorial.doFirst {
 taskTutorial.doLast {
     println("taskTutorial doLast lastly")
 }
+
+
+task "A" {
+    doLast {
+        println("Task A")
+    }
+}
+
+task "B" {
+    doLast {
+        println("Task B")
+    }
+}
+
+task C (dependsOn : ["A", "B"]) {
+    doLast {
+        println("Task C")
+    }
+}
