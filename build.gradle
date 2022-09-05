@@ -18,7 +18,12 @@ test {
     useJUnitPlatform()
 }
 
-task "taskTutorial" {
+def actionsMap = new HashMap()
+actionsMap.put("action", {
+    println "This is an action"
+})
+
+task(actionsMap, "taskTutorial" ){
 
     println("这是最简单的task")
 
@@ -29,4 +34,12 @@ task "taskTutorial" {
     doLast {
         println("taskTutorial doLast")
     }
+}
+
+taskTutorial.doFirst {
+    println("taskTutorial doFirst firstly")
+}
+
+taskTutorial.doLast {
+    println("taskTutorial doLast lastly")
 }
