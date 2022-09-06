@@ -57,8 +57,14 @@ task "B" {
     }
 }
 
-task C (dependsOn : ["A", "B"]) {
+task C {
+    dependsOn=["A", "B"]
     doLast {
         println("Task C")
     }
+}
+C.dependsOn=["A", "B"]
+
+task D (type: Delete) {
+    delete "./app2/src/main/java/test.kt"
 }
