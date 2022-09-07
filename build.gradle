@@ -1,3 +1,5 @@
+import java.time.Duration
+
 plugins {
     id 'java'
 }
@@ -66,5 +68,41 @@ task C {
 C.dependsOn=["A", "B"]
 
 task D (type: Delete) {
+    doFirst {
+        println("doFirst Task D")
+    }
     delete "./app2/src/main/java/test.kt"
+    println("delete ./app2/src/main/java/test.kt")
+
+    doLast {
+        println("doLast Task D")
+    }
+}
+
+4.times {
+    tasks.register("task$it") {
+       doLast {
+           println "I am task number $it"
+       }
+    }
+}
+
+task1.enabled = false
+
+tasks.named("task0") {
+    dependsOn("task1", "task2")
+}
+
+task ATest() {
+    doLast {
+        Thread.sleep(1000)
+        println "current task ATest has been executed"
+    }
+    timeout = Duration.ofMillis(500)
+}
+
+task BTest() {
+    doLast {
+        println "current task BTest has been executed"
+    }
 }
