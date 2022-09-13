@@ -25,7 +25,7 @@ actionsMap.put("action", {
     println "This is an action"
 })
 
-task(actionsMap, "taskTutorial" ){
+task(actionsMap, "taskTutorial") {
 
     println("这是最简单的task")
 
@@ -60,14 +60,14 @@ task "B" {
 }
 
 task C {
-    dependsOn=["A", "B"]
+    dependsOn = ["A", "B"]
     doLast {
         println("Task C")
     }
 }
-C.dependsOn=["A", "B"]
+C.dependsOn = ["A", "B"]
 
-task D (type: Delete) {
+task D(type: Delete) {
     doFirst {
         println("doFirst Task D")
     }
@@ -81,9 +81,9 @@ task D (type: Delete) {
 
 4.times {
     tasks.register("task$it") {
-       doLast {
-           println "I am task number $it"
-       }
+        doLast {
+            println "I am task number $it"
+        }
     }
 }
 
@@ -98,7 +98,6 @@ task ATest() {
         Thread.sleep(1000)
         println "current task ATest has been executed"
     }
-    timeout = Duration.ofMillis(500)
 }
 
 task BTest() {
@@ -106,3 +105,55 @@ task BTest() {
         println "current task BTest has been executed"
     }
 }
+
+defaultTasks "ATest", "BTest"
+
+File testFile = file("test.txt")
+testFile.createNewFile()
+
+FileCollection fileCollection = files("test/test1.txt", "test/test2.txt", "test/test3.txt", "test/test4.txt")
+fileCollection.forEach {
+    it.createNewFile()
+}
+/**
+class GreetingPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        project.task("helloPlugin") {
+            doLast {
+                println "Hello from the GreetingPlugin"
+            }
+        }
+    }
+
+}
+
+apply plugin: GreetingPlugin
+ **/
+
+abstract class GreetingPluginExtension {
+    abstract Property<String> getMessage()
+
+    GreetingPluginExtension() {
+        message.convention('Hello from GreetingPlugin')
+    }
+}
+
+class GreetingPlugin implements Plugin<Project> {
+    void apply(Project project) {
+        // Add the 'greeting' extension object
+        def extension = project.extensions.create('greeting', GreetingPluginExtension)
+        // Add a task that uses configuration from the extension object
+        project.task('hello') {
+            doLast {
+                println extension.message.get()
+            }
+        }
+    }
+}
+
+apply plugin: GreetingPlugin
+
+greeting.message = 'Hi from Gradle'
+
