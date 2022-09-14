@@ -3,3 +3,50 @@ include 'app2'
 include 'app3'
 include 'app4'
 
+
+gradle.settingsEvaluated {
+    println "settingsEvaluated"
+}
+
+gradle.projectsLoaded {
+    println "projectsLoaded"
+}
+
+def projectName = ""
+gradle.addProjectEvaluationListener(new ProjectEvaluationListener() {
+    @Override
+    void beforeEvaluate(Project project) {
+        projectName = project.name
+        println "${project.name} project beforeEvaluate"
+    }
+
+    @Override
+    void afterEvaluate(Project project, ProjectState projectState) {
+        println "${project.name} Project afterEvalue"
+    }
+})
+
+gradle.beforeProject {
+    println "${projectName} beforeProject"
+}
+
+gradle.afterProject {
+    println "${projectName} afterProject"
+}
+
+def rootProjectName = rootProject.getName()
+gradle.projectsEvaluated {
+    println "${rootProjectName} projectsEvaluated"
+}
+
+gradle.taskGraph.whenReady {
+    println "${rootProjectName} task Graph when Ready"
+}
+
+gradle.taskGraph.beforeTask { task ->
+    println "this is the task ${task.name} of the project beforeTask"
+}
+
+gradle.taskGraph.afterTask { task ->
+    println "this is the task ${task.name} of the project afterTask"
+}
